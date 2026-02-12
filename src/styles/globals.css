@@ -1,1 +1,44 @@
 @import "tailwindcss";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@tailwind utilities;
+@layer theme, base, components, utilities;
+
+@theme {
+
+    --default-font-family: 'Inter', sans-serif;
+
+    --font-inter: 'Inter', sans-serif;
+    --font-kanit: 'Kanit', sans-serif;
+
+    --color-neutral-dark: #090909;
+    --color-neutral-medium: #141414;
+    --color-neutral-light: #313131;
+
+    --color-primary-medium: #F0E907;
+
+    --breakpoint-xs: 30rem;
+    --breakpoint-2xl: 100rem;
+    --breakpoint-3xl: 120rem;
+    --breakpoint-4xl: 140rem;
+
+}
+
+* {
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+}
+
+body {
+    background-color: #18161C;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+*:focus {
+    outline: none;
+}
