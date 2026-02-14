@@ -8,12 +8,11 @@ const BoxGame = (props: BoxGameProps) => {
     const [isLaunching, setIsLaunching] = useState(false);
 
     const handleClick = () => {
-        if (props.launching) return; // Prevent click if any game is launching
+        if (props.launching) return;
         setIsLaunching(true);
         props.onClick();
     };
 
-    // Disable interactions when any game is launching
     const isDisabled = props.launching && !isLaunching;
 
     return (
@@ -26,7 +25,6 @@ const BoxGame = (props: BoxGameProps) => {
             } ${isDisabled ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}
         >
             <div className="relative flex h-[34vh] w-[34vh] items-center justify-center overflow-hidden rounded-3xl">
-                {/* Launch overlay animation - only for this game */}
                 {isLaunching && (
                     <motion.div
                         initial={{ scale: 0, opacity: 1 }}
@@ -35,8 +33,6 @@ const BoxGame = (props: BoxGameProps) => {
                         className="bg-primary-medium absolute inset-0 z-20 rounded-full"
                     />
                 )}
-
-                {/* Play button circle */}
                 <motion.div
                     animate={
                         isLaunching
@@ -50,8 +46,6 @@ const BoxGame = (props: BoxGameProps) => {
                 >
                     <Play size={52} strokeWidth={2.5} />
                 </motion.div>
-
-                {/* Game cover image */}
                 <motion.div
                     animate={isLaunching ? { scale: 1.1, opacity: 0 } : { scale: 1, opacity: 1 }}
                     transition={{ duration: 0.6 }}
