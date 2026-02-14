@@ -1,6 +1,5 @@
 import Head from "next/head";
 import HeaderBar from "@/components/header/HeaderBar";
-import BoxGame from "@/components/box/BoxGame";
 import { Game } from "@/types/model/Game";
 import Cover1 from "@/public/assets/img/game_cover_1.jpg";
 import Cover2 from "@/public/assets/img/game_cover_2.jpg";
@@ -11,8 +10,12 @@ import InputControl from "@/components/input/InputControl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import BoxGame from "@/components/box/BoxGame";
+import {router} from "next/client";
 
 export default function Home() {
+
+    const [launching, setLaunching] = useState<boolean>(false);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
 
     const games: Game[] = [
@@ -36,8 +39,17 @@ export default function Home() {
         },
     ];
 
+    const launchGame = () => {
+        if (launching) return;
+        setLaunching(true);
+        setTimeout(() => {
+            router.reload();
+        }, 1000);
+    }
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            if (launching) return;
             const key = e.key.toLowerCase();
 
             if (key === "a") {
@@ -51,6 +63,9 @@ export default function Home() {
                     if (prev === -1) return 0;
                     return prev + 1;
                 });
+            } else if (key === ' ' && selectedGame !== -1) {
+                e.preventDefault();
+                // todo implement
             }
         };
 
@@ -88,20 +103,44 @@ export default function Home() {
                     <BoxGame
                         game={games[0]}
                         selected={selectedGame === 0}
-                        onMouseEnter={() => setSelectedGame(0)}
-                        onMouseLeave={() => setSelectedGame(-1)}
+                        launching={launching}
+                        onMouseEnter={() => {
+                            if (launching) return;
+                            setSelectedGame(0);
+                        }}
+                        onMouseLeave={() => {
+                            if (launching) return;
+                            setSelectedGame(-1);
+                        }}
+                        onClick={() => launchGame()}
                     />
                     <BoxGame
                         game={games[1]}
                         selected={selectedGame === 1}
-                        onMouseEnter={() => setSelectedGame(1)}
-                        onMouseLeave={() => setSelectedGame(-1)}
+                        launching={launching}
+                        onMouseEnter={() => {
+                            if (launching) return;
+                            setSelectedGame(1);
+                        }}
+                        onMouseLeave={() => {
+                            if (launching) return;
+                            setSelectedGame(-1);
+                        }}
+                        onClick={() => launchGame()}
                     />
                     <BoxGame
                         game={games[2]}
                         selected={selectedGame === 2}
-                        onMouseEnter={() => setSelectedGame(2)}
-                        onMouseLeave={() => setSelectedGame(-1)}
+                        launching={launching}
+                        onMouseEnter={() => {
+                            if (launching) return;
+                            setSelectedGame(2);
+                        }}
+                        onMouseLeave={() => {
+                            if (launching) return;
+                            setSelectedGame(-1);
+                        }}
+                        onClick={() => launchGame()}
                     />
                 </div>
                 <div className="flex items-center px-16 py-12">
