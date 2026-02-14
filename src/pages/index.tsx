@@ -7,6 +7,7 @@ import Cover2 from "@/public/assets/img/game_cover_2.jpg";
 import Cover3 from "@/public/assets/img/game_cover_3.jpg";
 import InputButton from "@/components/input/InputButton";
 import {Info, Space} from "lucide-react";
+import InputControl from "@/components/input/InputControl";
 
 export default function Home() {
 
@@ -43,19 +44,19 @@ export default function Home() {
                     <BoxGame game={games[1]}/>
                     <BoxGame game={games[2]}/>
                 </div>
-                <div className="flex items-center py-8 px-16">
+                <div className="flex items-center py-12 px-16">
                     <div className="flex items-center gap-x-4">
-                        <InputButton content="A" single color="#F0E907"/>
-                        <InputButton content="D" single color="#F0E907"/>
-                        <p className="text-white font-bold text-3xl">Select</p>
+                        <InputControl inputKey="A" />
+                        <InputControl inputKey="D" />
+                        <p className="text-white font-bold text-3xl ml-4">Select</p>
                     </div>
                     <div className="flex items-center gap-x-4 ml-12">
-                        <InputButton icon={Space} single color="#F0E907"/>
-                        <p className="text-white font-bold text-3xl">Play</p>
+                        <InputControl icon={Space}/>
+                        <p className="text-white font-bold text-3xl ml-4">Play</p>
                     </div>
                     <div className="grow"/>
-                    <div className="flex items-center gap-x-4">
-                        <InputButton icon={Info} single/>
+                    <div className="flex items-center gap-x-8">
+                        <InputButton icon={Info}/>
                         <InputButton content="Start Voting"/>
                     </div>
                 </div>

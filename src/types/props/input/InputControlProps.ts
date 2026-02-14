@@ -1,9 +1,8 @@
 import {LucideIcon} from "lucide-react/dist/lucide-react.prefixed";
 
-export type InputButtonProps = {
+export type InputControlProps = {
     className?: string;
-    single?: boolean;
-    content?: string;
+    inputKey?: string;
+    pressed?: boolean;
     icon?: LucideIcon;
-    color?: string;
-};
+}
