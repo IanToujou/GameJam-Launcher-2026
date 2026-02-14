@@ -20,7 +20,7 @@ const BoxGame = (props: BoxGameProps) => {
             onClick={handleClick}
             onMouseEnter={isDisabled ? undefined : props.onMouseEnter}
             onMouseLeave={isDisabled ? undefined : props.onMouseLeave}
-            className={`bg-neutral-dark border-neutral-light ring-primary-medium group flex flex-col rounded-4xl border-8 p-5 ring-0 transition-all duration-200 ${
+            className={`${props.className} bg-neutral-dark border-neutral-light ring-primary-medium group flex flex-col rounded-4xl border-8 p-5 ring-0 transition-all duration-200 ${
                 props.selected && !isDisabled ? 'ring-8' : ''
             } ${isDisabled ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}
         >

@@ -65,13 +65,16 @@ export default function Home() {
                 });
             } else if (key === ' ' && selectedGame !== -1) {
                 e.preventDefault();
-                // todo implement
+                const gameElement = document.querySelector(`.game-box-${selectedGame}`) as HTMLElement;
+                if (gameElement) {
+                    gameElement.click();
+                }
             }
         };
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [games.length]);
+    }, [games.length, launching, selectedGame]);
 
     return (
         <>
@@ -113,6 +116,7 @@ export default function Home() {
                             setSelectedGame(-1);
                         }}
                         onClick={() => launchGame()}
+                        className="game-box-0"
                     />
                     <BoxGame
                         game={games[1]}
@@ -127,6 +131,7 @@ export default function Home() {
                             setSelectedGame(-1);
                         }}
                         onClick={() => launchGame()}
+                        className="game-box-1"
                     />
                     <BoxGame
                         game={games[2]}
@@ -141,6 +146,7 @@ export default function Home() {
                             setSelectedGame(-1);
                         }}
                         onClick={() => launchGame()}
+                        className="game-box-2"
                     />
                 </div>
                 <div className="flex items-center px-16 py-12">
