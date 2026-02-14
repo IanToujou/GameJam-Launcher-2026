@@ -1,4 +1,4 @@
-import {Game} from "@/types/model/Game";
+import { Game } from "@/types/model/Game";
 
 export type GameProps = {
     className?: string;

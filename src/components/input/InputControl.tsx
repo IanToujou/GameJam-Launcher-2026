@@ -1,23 +1,21 @@
-import {InputControlProps} from "@/types/props/input/InputControlProps";
+import { InputControlProps } from "@/types/props/input/InputControlProps";
 
 const InputControl = (props: InputControlProps) => {
-
     if (props.icon) {
         return (
-            <div className="flex items-center justify-center size-18 bg-neutral-dark border-6 border-neutral-light rounded-full">
-                <p className="text-3xl text-primary-medium font-bold">
-                    <props.icon size={36} strokeWidth={2.5} className="text-3xl"/>
+            <div className="bg-neutral-dark border-neutral-light flex size-18 items-center justify-center rounded-full border-6">
+                <p className="text-primary-medium text-3xl font-bold">
+                    <props.icon size={36} strokeWidth={2.5} className="text-3xl" />
                 </p>
             </div>
         );
     } else {
         return (
-            <div className="flex items-center justify-center size-18 bg-neutral-dark border-6 border-neutral-light rounded-full">
-                <p className="text-3xl text-primary-medium font-bold italic">{props.inputKey}</p>
+            <div className="bg-neutral-dark border-neutral-light flex size-18 items-center justify-center rounded-full border-6">
+                <p className="text-primary-medium text-3xl font-bold italic">{props.inputKey}</p>
             </div>
         );
     }
-
-}
+};
 
 export default InputControl;

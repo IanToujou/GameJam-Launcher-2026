@@ -1,27 +1,21 @@
-import {InputButtonProps} from "@/types/props/input/InputButtonProps";
+import { InputButtonProps } from "@/types/props/input/InputButtonProps";
 
 const InputButton = (props: InputButtonProps) => {
-
     if (props.icon) {
-
         return (
-            <div className="flex items-center justify-center size-18 bg-neutral-dark border-6 border-neutral-light rounded-full duration-200 hover:ring-6 ring-0 ring-primary-medium cursor-pointer]">
-                <p className="text-3xl text-white font-bold italic">
-                    <props.icon size={36} strokeWidth={2.5} className="text-3xl"/>
+            <div className="bg-neutral-dark border-neutral-light ring-primary-medium cursor-pointer] flex size-18 items-center justify-center rounded-full border-6 ring-0 duration-200 hover:ring-6">
+                <p className="text-3xl font-bold text-white italic">
+                    <props.icon size={36} strokeWidth={2.5} className="text-3xl" />
                 </p>
             </div>
         );
-
     } else {
-
         return (
-            <div className="flex items-center justify-center h-18 px-10 bg-neutral-dark border-6 border-neutral-light rounded-full duration-200 hover:ring-6 ring-0 ring-primary-medium cursor-pointer">
-                <p className="text-3xl font-extrabold italic text-white">{props.content}</p>
+            <div className="bg-neutral-dark border-neutral-light ring-primary-medium flex h-18 cursor-pointer items-center justify-center rounded-full border-6 px-10 ring-0 duration-200 hover:ring-6">
+                <p className="text-3xl font-extrabold text-white italic">{props.content}</p>
             </div>
         );
-
     }
-
-}
+};
 
 export default InputButton;
