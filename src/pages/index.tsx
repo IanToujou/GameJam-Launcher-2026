@@ -9,7 +9,7 @@ import InputButton from "@/components/input/InputButton";
 import { Info, Space } from "lucide-react";
 import InputControl from "@/components/input/InputControl";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function Home() {
@@ -35,6 +35,28 @@ export default function Home() {
             imageSrc: Cover3.src,
         },
     ];
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const key = e.key.toLowerCase();
+
+            if (key === "a") {
+                setSelectedGame((prev) => {
+                    if (prev <= 0) return 0;
+                    return prev - 1;
+                });
+            } else if (key === "d") {
+                setSelectedGame((prev) => {
+                    if (prev >= games.length - 1) return games.length - 1;
+                    if (prev === -1) return 0;
+                    return prev + 1;
+                });
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [games.length]);
 
     return (
         <>
@@ -65,16 +87,19 @@ export default function Home() {
                 <div className="flex grow items-center justify-center gap-x-[6vw]">
                     <BoxGame
                         game={games[0]}
+                        selected={selectedGame === 0}
                         onMouseEnter={() => setSelectedGame(0)}
                         onMouseLeave={() => setSelectedGame(-1)}
                     />
                     <BoxGame
                         game={games[1]}
+                        selected={selectedGame === 1}
                         onMouseEnter={() => setSelectedGame(1)}
                         onMouseLeave={() => setSelectedGame(-1)}
                     />
                     <BoxGame
                         game={games[2]}
+                        selected={selectedGame === 2}
                         onMouseEnter={() => setSelectedGame(2)}
                         onMouseLeave={() => setSelectedGame(-1)}
                     />
