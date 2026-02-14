@@ -9,8 +9,8 @@ import InputButton from "@/components/input/InputButton";
 import { Info, Space } from "lucide-react";
 import InputControl from "@/components/input/InputControl";
 import Image from "next/image";
-import {useState} from "react";
-import {AnimatePresence, motion} from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Home() {
     const [selectedGame, setSelectedGame] = useState<number>(-1);
@@ -50,17 +50,34 @@ export default function Home() {
                             animate={{ opacity: 0.2 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute w-screen h-screen -z-10"
+                            className="absolute -z-10 h-screen w-screen"
                         >
-                            <Image src={games[selectedGame].imageSrc} alt="Game Background" fill className="object-cover"/>
+                            <Image
+                                src={games[selectedGame].imageSrc}
+                                alt="Game Background"
+                                fill
+                                className="object-cover"
+                            />
                         </motion.div>
                     )}
                 </AnimatePresence>
                 <HeaderBar />
                 <div className="flex grow items-center justify-center gap-x-[6vw]">
-                    <BoxGame game={games[0]} onMouseEnter={() => setSelectedGame(0)} onMouseLeave={() => setSelectedGame(-1)}/>
-                    <BoxGame game={games[1]} onMouseEnter={() => setSelectedGame(1)} onMouseLeave={() => setSelectedGame(-1)}/>
-                    <BoxGame game={games[2]} onMouseEnter={() => setSelectedGame(2)} onMouseLeave={() => setSelectedGame(-1)}/>
+                    <BoxGame
+                        game={games[0]}
+                        onMouseEnter={() => setSelectedGame(0)}
+                        onMouseLeave={() => setSelectedGame(-1)}
+                    />
+                    <BoxGame
+                        game={games[1]}
+                        onMouseEnter={() => setSelectedGame(1)}
+                        onMouseLeave={() => setSelectedGame(-1)}
+                    />
+                    <BoxGame
+                        game={games[2]}
+                        onMouseEnter={() => setSelectedGame(2)}
+                        onMouseLeave={() => setSelectedGame(-1)}
+                    />
                 </div>
                 <div className="flex items-center px-16 py-12">
                     <div className="flex items-center gap-x-4">
