@@ -3,8 +3,37 @@ import HeaderBar from "@/components/header/HeaderBar";
 import InputControl from "@/components/input/InputControl";
 import InputButton from "@/components/input/InputButton";
 import {router} from "next/client";
+import BoxVote from "@/components/box/BoxVote";
+import {Game} from "@/types/model/Game";
+import Cover1 from "@/public/assets/img/game_cover_1.jpg";
+import Cover2 from "@/public/assets/img/game_cover_2.jpg";
+import Cover3 from "@/public/assets/img/game_cover_3.jpg";
+import {useState} from "react";
 
 export default function Vote() {
+
+    const games: Game[] = [
+        {
+            id: 1,
+            name: "Awesome Game",
+            description: "A cool game about something cool or so.",
+            imageSrc: Cover1.src,
+        },
+        {
+            id: 2,
+            name: "Awesome Game 2",
+            description: "A cool game about something cool or so.",
+            imageSrc: Cover2.src,
+        },
+        {
+            id: 3,
+            name: "Awesome Game 3",
+            description: "A cool game about something cool or so.",
+            imageSrc: Cover3.src,
+        },
+    ];
+
+    const [stars, setStars] = useState<number[]>([0, 2, 4]);
 
     return (
         <>
@@ -13,8 +42,17 @@ export default function Vote() {
             </Head>
             <div className="flex flex-col h-screen">
                 <HeaderBar />
-                <div className="flex flex-col items-center justify-center grow">
-
+                <div className="flex flex-col gap-y-14 items-center justify-center grow">
+                    {games.map((game: Game, index: number) => {
+                        return (
+                            <BoxVote key={index} game={games[index]} stars={stars[index]} onChange={(stars: number) => {
+                                setStars((prev) => {
+                                    prev[index] = stars;
+                                    return [...prev];
+                                });
+                            }}/>
+                        );
+                    })}
                 </div>
                 <div className="flex items-center px-16 py-12">
                     <div className="flex items-center gap-x-4">
@@ -39,8 +77,8 @@ export default function Vote() {
                         <div className="cursor-pointer" onClick={() => router.push("/").then() }>
                             <svg width="127" height="74" viewBox="0 0 127 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M21.5778 66.5984L6.1001 10.5984C5.0439 6.77695 7.89624 3 11.861 3H89.9133C134.738 3 135.983 71 89.9133 71H27.3448C24.6467 71 22.2966 69.199 21.5778 66.5984Z" fill="#FF2626"/>
-                                <path d="M7.81348 3H90.9248C101.931 3 110.078 7.26006 115.531 13.5312C121.036 19.8617 123.921 28.3953 123.998 37.0264C124.075 45.6574 121.342 54.169 115.895 60.4766C110.5 66.7221 102.285 71 90.9248 71H24.4766C23.1284 71 21.9483 70.0973 21.5938 68.7783L4.92871 6.77832C4.4143 4.86366 5.84921 3 7.81348 3Z" fill="#090909" stroke="#FF2626" stroke-width="6"/>
-                                <path d="M43 29.5L55.5 42M43 29.5L55.5 17M43 29.5H70.5C91 29.5 91 54 70.5 54" stroke="#FF2626" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M7.81348 3H90.9248C101.931 3 110.078 7.26006 115.531 13.5312C121.036 19.8617 123.921 28.3953 123.998 37.0264C124.075 45.6574 121.342 54.169 115.895 60.4766C110.5 66.7221 102.285 71 90.9248 71H24.4766C23.1284 71 21.9483 70.0973 21.5938 68.7783L4.92871 6.77832C4.4143 4.86366 5.84921 3 7.81348 3Z" fill="#090909" stroke="#FF2626" strokeWidth="6"/>
+                                <path d="M43 29.5L55.5 42M43 29.5L55.5 17M43 29.5H70.5C91 29.5 91 54 70.5 54" stroke="#FF2626" strokeWidth="6" strokeLinecap="round"/>
                             </svg>
                         </div>
                     </div>

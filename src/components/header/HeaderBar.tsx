@@ -51,7 +51,7 @@ const HeaderBar = () => {
                         d="M430.354 21V73.5C430.354 83.4411 422.296 91.5 412.354 91.5H51.3422C44.9115 91.5 38.9692 88.0692 35.7538 82.5L5.44289 30C-1.48531 18 7.17492 3 21.0313 3H412.354C422.296 3 430.354 11.0589 430.354 21Z"
                         fill="url(#paint0_linear_88_28)"
                         stroke="#313131"
-                        stroke-width="6"
+                        strokeWidth="6"
                     />
                     <defs>
                         <linearGradient
@@ -62,8 +62,8 @@ const HeaderBar = () => {
                             y2="47.25"
                             gradientUnits="userSpaceOnUse"
                         >
-                            <stop stop-color="#111111" />
-                            <stop offset="1" stop-color="#090909" />
+                            <stop stopColor="#111111" />
+                            <stop offset="1" stopColor="#090909" />
                         </linearGradient>
                     </defs>
                 </svg>
