@@ -4,4 +4,5 @@ export type InputButtonProps = {
     className?: string;
     icon?: LucideIcon;
     content?: string;
+    onClick?: () => void;
 };

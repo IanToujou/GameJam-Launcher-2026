@@ -162,7 +162,7 @@ export default function Home() {
                     <div className="grow" />
                     <div className="flex items-center gap-x-8">
                         <InputButton icon={Info} />
-                        <InputButton content="Start Voting" />
+                        <InputButton content="Start Voting" onClick={() => router.push("/vote").then() }/>
                     </div>
                 </div>
             </div>
