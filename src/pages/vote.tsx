@@ -8,13 +8,18 @@ import { Game } from "@/types/model/Game";
 import Cover1 from "@/public/assets/img/game_cover_1.jpg";
 import Cover2 from "@/public/assets/img/game_cover_2.jpg";
 import Cover3 from "@/public/assets/img/game_cover_3.jpg";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Vote() {
     const [stars, setStars] = useState<number[]>([0, 0, 0]);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
+    const [showCountdown, setShowCountdown] = useState<boolean>(false);
+    const [countdown, setCountdown] = useState<number>(5);
+
+    const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     const games: Game[] = [
         {
@@ -37,10 +42,68 @@ export default function Vote() {
         },
     ];
 
+    const resetInactivityTimer = () => {
+
+        if (inactivityTimerRef.current) {
+            clearTimeout(inactivityTimerRef.current);
+        }
+        if (countdownTimerRef.current) {
+            clearInterval(countdownTimerRef.current);
+        }
+
+        setShowCountdown(false);
+        setCountdown(5);
+
+        inactivityTimerRef.current = setTimeout(() => {
+            setShowCountdown(true);
+
+            // Start countdown timer (5 seconds)
+            let timeLeft = 5;
+            setCountdown(timeLeft);
+
+            countdownTimerRef.current = setInterval(() => {
+                timeLeft -= 1;
+                setCountdown(timeLeft);
+
+                if (timeLeft <= 0) {
+                    if (countdownTimerRef.current) {
+                        clearInterval(countdownTimerRef.current);
+                    }
+                    router.push("/").then();
+                }
+            }, 1000);
+        }, 5000);
+    };
+
+    // Initialize inactivity timer on mount
+    useEffect(() => {
+        resetInactivityTimer();
+
+        return () => {
+            if (inactivityTimerRef.current) {
+                clearTimeout(inactivityTimerRef.current);
+            }
+            if (countdownTimerRef.current) {
+                clearInterval(countdownTimerRef.current);
+            }
+        };
+    }, []);
+
+    // Handle mouse movement
+    useEffect(() => {
+        const handleMouseMove = () => {
+            resetInactivityTimer();
+        };
+
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, []);
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             const key = e.key.toLowerCase();
 
+            resetInactivityTimer();
             if (key === "w") {
                 setSelectedGame((prev) => {
                     if (prev <= 0) return 0;
@@ -137,7 +200,9 @@ export default function Vote() {
                     <div className="flex items-center gap-x-8">
                         <div className="text-right font-bold">
                             <p className="text-xl text-white">Back to Home</p>
-                            <p className="text-lg text-gray-400">Returning in 5 seconds</p>
+                            {showCountdown && (
+                                <p className="text-lg text-gray-400">Returning in {countdown} second{countdown !== 1 ? 's' : ''}</p>
+                            )}
                         </div>
                         <div className="cursor-pointer" onClick={() => router.push("/").then()}>
                             <svg
