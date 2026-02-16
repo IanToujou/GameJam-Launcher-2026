@@ -11,10 +11,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import BoxGame from "@/components/box/BoxGame";
-import {router} from "next/client";
+import { router } from "next/client";
 
 export default function Home() {
-
     const [launching, setLaunching] = useState<boolean>(false);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
 
@@ -45,7 +44,7 @@ export default function Home() {
         setTimeout(() => {
             router.reload();
         }, 1000);
-    }
+    };
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -63,9 +62,11 @@ export default function Home() {
                     if (prev === -1) return 0;
                     return prev + 1;
                 });
-            } else if (key === ' ' && selectedGame !== -1) {
+            } else if (key === " " && selectedGame !== -1) {
                 e.preventDefault();
-                const gameElement = document.querySelector(`.game-box-${selectedGame}`) as HTMLElement;
+                const gameElement = document.querySelector(
+                    `.game-box-${selectedGame}`,
+                ) as HTMLElement;
                 if (gameElement) {
                     gameElement.click();
                 }
@@ -162,7 +163,10 @@ export default function Home() {
                     <div className="grow" />
                     <div className="flex items-center gap-x-8">
                         <InputButton icon={Info} />
-                        <InputButton content="Start Voting" onClick={() => router.push("/vote").then() }/>
+                        <InputButton
+                            content="Start Voting"
+                            onClick={() => router.push("/vote").then()}
+                        />
                     </div>
                 </div>
             </div>
