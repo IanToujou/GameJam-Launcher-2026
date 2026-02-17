@@ -1,9 +1,5 @@
 import Head from "next/head";
 import HeaderBar from "@/components/header/HeaderBar";
-import { Game } from "@/types/model/Game";
-import Cover1 from "@/public/assets/img/game_cover_1.jpg";
-import Cover2 from "@/public/assets/img/game_cover_2.jpg";
-import Cover3 from "@/public/assets/img/game_cover_3.jpg";
 import InputButton from "@/components/input/InputButton";
 import { Info, Space } from "lucide-react";
 import InputControl from "@/components/input/InputControl";
@@ -12,38 +8,47 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import BoxGame from "@/components/box/BoxGame";
 import { router } from "next/client";
+import GameList from "@/data/GameList";
+import { Command } from "@tauri-apps/plugin-shell";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 export default function Home() {
     const [launching, setLaunching] = useState<boolean>(false);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
 
-    const games: Game[] = [
-        {
-            id: 1,
-            name: "Awesome Game",
-            description: "A cool game about something cool or so.",
-            imageSrc: Cover1.src,
-        },
-        {
-            id: 2,
-            name: "Awesome Game 2",
-            description: "A cool game about something cool or so.",
-            imageSrc: Cover2.src,
-        },
-        {
-            id: 3,
-            name: "Awesome Game 3",
-            description: "A cool game about something cool or so.",
-            imageSrc: Cover3.src,
-        },
-    ];
+    async function focusAppWindow() {
+        await getCurrentWindow().setFocus();
+    }
 
     const launchGame = () => {
+        if (selectedGame === -1) return;
         if (launching) return;
         setLaunching(true);
+        console.log(
+            "Launching game ID " + selectedGame + " (" + GameList[selectedGame].name + ").",
+        );
+        console.log(
+            "Command: /bin/bash -c /home/ibour/Downloads/Games/" + GameList[selectedGame].path,
+        );
         setTimeout(() => {
-            router.reload();
-        }, 1000);
+            Command.create("launch-game", [
+                "-c",
+                "/home/ibour/Downloads/Games/" + GameList[selectedGame].path,
+            ])
+                .execute()
+                .then((result) => {
+                    console.log(result);
+                    const timer = setTimeout(() => {
+                        focusAppWindow().then();
+                        router.reload();
+                    }, 500);
+                    return () => clearTimeout(timer);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    router.reload();
+                });
+        }, 500);
     };
 
     useEffect(() => {
@@ -58,7 +63,7 @@ export default function Home() {
                 });
             } else if (key === "d") {
                 setSelectedGame((prev) => {
-                    if (prev >= games.length - 1) return games.length - 1;
+                    if (prev >= GameList.length - 1) return GameList.length - 1;
                     if (prev === -1) return 0;
                     return prev + 1;
                 });
@@ -75,7 +80,7 @@ export default function Home() {
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [games.length, launching, selectedGame]);
+    }, [launching, selectedGame]);
 
     return (
         <>
@@ -94,7 +99,7 @@ export default function Home() {
                             className="absolute -z-10 h-screen w-screen"
                         >
                             <Image
-                                src={games[selectedGame].imageSrc}
+                                src={GameList[selectedGame].imageSrc}
                                 alt="Game Background"
                                 fill
                                 className="object-cover"
@@ -104,51 +109,26 @@ export default function Home() {
                 </AnimatePresence>
                 <HeaderBar />
                 <div className="flex grow items-center justify-center gap-x-[6vw]">
-                    <BoxGame
-                        game={games[0]}
-                        selected={selectedGame === 0}
-                        launching={launching}
-                        onMouseEnter={() => {
-                            if (launching) return;
-                            setSelectedGame(0);
-                        }}
-                        onMouseLeave={() => {
-                            if (launching) return;
-                            setSelectedGame(-1);
-                        }}
-                        onClick={() => launchGame()}
-                        className="game-box-0"
-                    />
-                    <BoxGame
-                        game={games[1]}
-                        selected={selectedGame === 1}
-                        launching={launching}
-                        onMouseEnter={() => {
-                            if (launching) return;
-                            setSelectedGame(1);
-                        }}
-                        onMouseLeave={() => {
-                            if (launching) return;
-                            setSelectedGame(-1);
-                        }}
-                        onClick={() => launchGame()}
-                        className="game-box-1"
-                    />
-                    <BoxGame
-                        game={games[2]}
-                        selected={selectedGame === 2}
-                        launching={launching}
-                        onMouseEnter={() => {
-                            if (launching) return;
-                            setSelectedGame(2);
-                        }}
-                        onMouseLeave={() => {
-                            if (launching) return;
-                            setSelectedGame(-1);
-                        }}
-                        onClick={() => launchGame()}
-                        className="game-box-2"
-                    />
+                    {GameList.map((game, index) => {
+                        return (
+                            <BoxGame
+                                key={index}
+                                game={GameList[index]}
+                                selected={selectedGame === index}
+                                launching={launching}
+                                onMouseEnter={() => {
+                                    if (launching) return;
+                                    setSelectedGame(index);
+                                }}
+                                onMouseLeave={() => {
+                                    if (launching) return;
+                                    setSelectedGame(-1);
+                                }}
+                                onClick={() => launchGame()}
+                                className="game-box-0"
+                            />
+                        );
+                    })}
                 </div>
                 <div className="flex items-center px-16 py-12">
                     <div className="flex items-center gap-x-4">

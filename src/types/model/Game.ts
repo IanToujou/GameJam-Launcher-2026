@@ -3,4 +3,5 @@ export type Game = {
     name: string;
     description: string;
     imageSrc: string;
+    path: string;
 };

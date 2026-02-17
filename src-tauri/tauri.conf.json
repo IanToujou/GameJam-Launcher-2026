@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "gamejam-launcher-2026",
-  "version": "0.1.0",
+  "productName": "GameJam Launcher 2026",
+  "version": "1.0.0",
   "identifier": "net.toujoustudios.gamejamlauncher2026",
   "build": {
     "frontendDist": "../out",

@@ -5,12 +5,10 @@ import InputButton from "@/components/input/InputButton";
 import { router } from "next/client";
 import BoxVote from "@/components/box/BoxVote";
 import { Game } from "@/types/model/Game";
-import Cover1 from "@/public/assets/img/game_cover_1.jpg";
-import Cover2 from "@/public/assets/img/game_cover_2.jpg";
-import Cover3 from "@/public/assets/img/game_cover_3.jpg";
-import {useEffect, useRef, useState} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import GameList from "@/data/GameList";
 
 export default function Vote() {
     const [stars, setStars] = useState<number[]>([0, 0, 0]);
@@ -21,83 +19,45 @@ export default function Vote() {
     const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
     const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-    const games: Game[] = [
-        {
-            id: 1,
-            name: "Awesome Game",
-            description: "A cool game about something cool or so.",
-            imageSrc: Cover1.src,
-        },
-        {
-            id: 2,
-            name: "Awesome Game 2",
-            description: "A cool game about something cool or so.",
-            imageSrc: Cover2.src,
-        },
-        {
-            id: 3,
-            name: "Awesome Game 3",
-            description: "A cool game about something cool or so.",
-            imageSrc: Cover3.src,
-        },
-    ];
-
-    const resetInactivityTimer = () => {
-
-        if (inactivityTimerRef.current) {
-            clearTimeout(inactivityTimerRef.current);
-        }
-        if (countdownTimerRef.current) {
-            clearInterval(countdownTimerRef.current);
-        }
-
-        setShowCountdown(false);
-        setCountdown(5);
-
+    const startInactivityTimer = useCallback(() => {
         inactivityTimerRef.current = setTimeout(() => {
             setShowCountdown(true);
-
-            // Start countdown timer (5 seconds)
             let timeLeft = 5;
             setCountdown(timeLeft);
-
             countdownTimerRef.current = setInterval(() => {
                 timeLeft -= 1;
                 setCountdown(timeLeft);
-
                 if (timeLeft <= 0) {
-                    if (countdownTimerRef.current) {
-                        clearInterval(countdownTimerRef.current);
-                    }
+                    if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
                     router.push("/").then();
                 }
             }, 1000);
         }, 5000);
-    };
-
-    // Initialize inactivity timer on mount
-    useEffect(() => {
-        resetInactivityTimer();
-
-        return () => {
-            if (inactivityTimerRef.current) {
-                clearTimeout(inactivityTimerRef.current);
-            }
-            if (countdownTimerRef.current) {
-                clearInterval(countdownTimerRef.current);
-            }
-        };
     }, []);
 
-    // Handle mouse movement
+    const resetInactivityTimer = useCallback(() => {
+        if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
+        if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+        setShowCountdown(false);
+        setCountdown(5);
+        startInactivityTimer();
+    }, [startInactivityTimer]);
+
+    useEffect(() => {
+        startInactivityTimer();
+        return () => {
+            if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
+            if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+        };
+    }, [startInactivityTimer]);
+
     useEffect(() => {
         const handleMouseMove = () => {
             resetInactivityTimer();
         };
-
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
+    }, [resetInactivityTimer]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -111,7 +71,7 @@ export default function Vote() {
                 });
             } else if (key === "s") {
                 setSelectedGame((prev) => {
-                    if (prev >= games.length - 1) return games.length - 1;
+                    if (prev >= GameList.length - 1) return GameList.length - 1;
                     if (prev === -1) return 0;
                     return prev + 1;
                 });
@@ -134,7 +94,7 @@ export default function Vote() {
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [games.length, selectedGame]);
+    }, [selectedGame, resetInactivityTimer]);
 
     return (
         <>
@@ -153,7 +113,7 @@ export default function Vote() {
                             className="absolute -z-10 h-screen w-screen"
                         >
                             <Image
-                                src={games[selectedGame].imageSrc}
+                                src={GameList[selectedGame].imageSrc}
                                 alt="Game Background"
                                 fill
                                 className="object-cover"
@@ -163,11 +123,11 @@ export default function Vote() {
                 </AnimatePresence>
                 <HeaderBar />
                 <div className="flex grow flex-col items-center justify-center gap-y-14">
-                    {games.map((game: Game, index: number) => {
+                    {GameList.map((game: Game, index: number) => {
                         return (
                             <BoxVote
                                 key={index}
-                                game={games[index]}
+                                game={GameList[index]}
                                 selected={selectedGame === index}
                                 onMouseEnter={() => setSelectedGame(index)}
                                 onMouseLeave={() => setSelectedGame(-1)}
@@ -201,7 +161,9 @@ export default function Vote() {
                         <div className="text-right font-bold">
                             <p className="text-xl text-white">Back to Home</p>
                             {showCountdown && (
-                                <p className="text-lg text-gray-400">Returning in {countdown} second{countdown !== 1 ? 's' : ''}</p>
+                                <p className="text-lg text-gray-400">
+                                    Returning in {countdown} second{countdown !== 1 ? "s" : ""}
+                                </p>
                             )}
                         </div>
                         <div className="cursor-pointer" onClick={() => router.push("/").then()}>
