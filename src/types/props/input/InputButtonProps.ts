@@ -5,4 +5,5 @@ export type InputButtonProps = {
     icon?: LucideIcon;
     content?: string;
     onClick?: () => void;
+    disabled?: boolean;
 };

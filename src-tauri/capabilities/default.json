@@ -8,6 +8,8 @@
   "permissions": [
     "core:default",
     "core:window:allow-set-focus",
+    "fs:allow-appdata-read-recursive",
+    "fs:allow-appdata-write-recursive",
     {
       "identifier": "shell:allow-execute",
       "allow": [
@@ -24,6 +26,8 @@
         }
       ]
     },
-    "shell:default"
+    "shell:default",
+    "store:default",
+    "fs:default"
   ]
 }

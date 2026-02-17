@@ -5,12 +5,16 @@ import InputButton from "@/components/input/InputButton";
 import { router } from "next/client";
 import BoxVote from "@/components/box/BoxVote";
 import { Game } from "@/types/model/Game";
+import { Vote } from "@/types/model/Vote";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import GameList from "@/data/GameList";
+import {BaseDirectory, readTextFile, writeTextFile} from "@tauri-apps/plugin-fs";
 
 export default function Vote() {
+    const VOTES_FILE = "votes.jsonl";
+
     const [stars, setStars] = useState<number[]>([0, 0, 0]);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
     const [showCountdown, setShowCountdown] = useState<boolean>(false);
@@ -18,6 +22,23 @@ export default function Vote() {
 
     const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
     const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+    const submitVote = async () => {
+        if (stars.some((star) => star === 0)) return;
+        const entry: Vote = {
+            timestamp: new Date().toISOString(),
+            sessionId: crypto.randomUUID(),
+            stars,
+        };
+        const line = JSON.stringify(entry + '\n');
+        let existing = '';
+        try {
+            existing = await readTextFile(VOTES_FILE, { baseDir: BaseDirectory.AppData });
+        } catch {}
+        await writeTextFile(VOTES_FILE, existing + line, {
+            baseDir: BaseDirectory.AppData,
+        });
+    };
 
     const startInactivityTimer = useCallback(() => {
         inactivityTimerRef.current = setTimeout(() => {
@@ -154,7 +175,12 @@ export default function Vote() {
                         <p className="ml-4 text-3xl font-bold text-white">Adjust</p>
                     </div>
                     <div className="absolute left-1/2 -translate-x-1/2">
-                        <InputButton content="Submit Vote" />
+                        <InputButton content="Submit Vote"
+                                     disabled={stars.some((star) => star === 0)}
+                                     onClick={() => submitVote().then(() => {
+                                        router.push("/").then();
+                                     })}
+                        />
                     </div>
                     <div className="grow" />
                     <div className="flex items-center gap-x-8">
