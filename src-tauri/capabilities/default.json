@@ -27,7 +27,6 @@
       ]
     },
     "shell:default",
-    "store:default",
     "fs:default"
   ]
 }

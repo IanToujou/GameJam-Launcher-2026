@@ -30,7 +30,7 @@ export default function Vote() {
             sessionId: crypto.randomUUID(),
             stars,
         };
-        const line = JSON.stringify(entry + '\n');
+        const line = JSON.stringify(entry) + '\n';
         let existing = '';
         try {
             existing = await readTextFile(VOTES_FILE, { baseDir: BaseDirectory.AppData });
