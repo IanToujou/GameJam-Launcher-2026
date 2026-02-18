@@ -12,7 +12,7 @@ import GameList from "@/data/GameList";
 import { Command } from "@tauri-apps/plugin-shell";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
-export default function Home() {
+export default function HomePage() {
     const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
 
     const [launching, setLaunching] = useState<boolean>(false);

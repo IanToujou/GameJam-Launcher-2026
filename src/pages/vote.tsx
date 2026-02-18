@@ -12,7 +12,7 @@ import Image from "next/image";
 import GameList from "@/data/GameList";
 import {BaseDirectory, readTextFile, writeTextFile} from "@tauri-apps/plugin-fs";
 
-export default function Vote() {
+export default function VotePage() {
     const VOTES_FILE = "votes.jsonl";
 
     const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
