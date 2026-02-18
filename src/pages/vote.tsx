@@ -11,6 +11,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import GameList from "@/data/GameList";
 import {BaseDirectory, readTextFile, writeTextFile} from "@tauri-apps/plugin-fs";
+import Popup from "reactjs-popup";
+import PopupVoteSuccess from "@/components/popup/PopupVoteSuccess";
 
 export default function VotePage() {
     const VOTES_FILE = "votes.jsonl";
@@ -191,12 +193,16 @@ export default function VotePage() {
                         <p className="ml-4 text-3xl font-bold text-white">Adjust</p>
                     </div>
                     <div className="absolute left-1/2 -translate-x-1/2">
-                        <InputButton content="Submit Vote"
-                                     disabled={stars.some((star) => star === 0)}
-                                     onClick={() => submitVote().then(() => {
-                                        router.push("/").then();
-                                     })}
-                        />
+                        <Popup arrow={false} disabled={stars.some((star) => star === 0)} closeOnEscape={false} closeOnDocumentClick={false} trigger={
+                            <div>
+                                <InputButton content="Submit Vote"
+                                             disabled={stars.some((star) => star === 0)}
+                                             onClick={() => submitVote().then()}
+                                />
+                            </div>
+                        }>
+                            <PopupVoteSuccess />
+                        </Popup>
                     </div>
                     <div className="grow" />
                     <div className="flex items-center gap-x-8">
