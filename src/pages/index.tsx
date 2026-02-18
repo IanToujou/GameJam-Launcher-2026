@@ -13,6 +13,8 @@ import { Command } from "@tauri-apps/plugin-shell";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 export default function Home() {
+    const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
+
     const [launching, setLaunching] = useState<boolean>(false);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
 
@@ -54,6 +56,7 @@ export default function Home() {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (launching) return;
+            setPressedKeys((prev) => new Set(prev).add(e.key.toLowerCase()));
             const key = e.key.toLowerCase();
 
             if (key === "a") {
@@ -78,8 +81,20 @@ export default function Home() {
             }
         };
 
+        const handleKeyUp = (e: KeyboardEvent) => {
+            setPressedKeys((prev) => {
+                const next = new Set(prev);
+                next.delete(e.key.toLowerCase());
+                return next;
+            });
+        };
+
         window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("keyup", handleKeyUp);
+        };
     }, [launching, selectedGame]);
 
     return (
@@ -132,12 +147,12 @@ export default function Home() {
                 </div>
                 <div className="flex items-center px-16 py-12">
                     <div className="flex items-center gap-x-4">
-                        <InputControl inputKey="A" />
-                        <InputControl inputKey="D" />
+                        <InputControl inputKey="A" pressed={pressedKeys.has("a")}/>
+                        <InputControl inputKey="D" pressed={pressedKeys.has("d")}/>
                         <p className="ml-4 text-3xl font-bold text-white">Select</p>
                     </div>
                     <div className="ml-12 flex items-center gap-x-4">
-                        <InputControl icon={Space} />
+                        <InputControl icon={Space} pressed={pressedKeys.has(" ")}/>
                         <p className="ml-4 text-3xl font-bold text-white">Play</p>
                     </div>
                     <div className="grow" />

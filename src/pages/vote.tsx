@@ -15,6 +15,8 @@ import {BaseDirectory, readTextFile, writeTextFile} from "@tauri-apps/plugin-fs"
 export default function Vote() {
     const VOTES_FILE = "votes.jsonl";
 
+    const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
+
     const [exitHover, setExitHover] = useState(false);
     const [stars, setStars] = useState<number[]>([0, 0, 0]);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
@@ -84,6 +86,7 @@ export default function Vote() {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             const key = e.key.toLowerCase();
+            setPressedKeys((prev) => new Set(prev).add(e.key.toLowerCase()));
 
             resetInactivityTimer();
             if (key === "w") {
@@ -114,8 +117,20 @@ export default function Vote() {
             }
         };
 
+        const handleKeyUp = (e: KeyboardEvent) => {
+            setPressedKeys((prev) => {
+                const next = new Set(prev);
+                next.delete(e.key.toLowerCase());
+                return next;
+            });
+        };
+
         window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("keyup", handleKeyUp);
+        };
     }, [selectedGame, resetInactivityTimer]);
 
     return (
@@ -166,13 +181,13 @@ export default function Vote() {
                 </div>
                 <div className="flex items-center px-16 py-12">
                     <div className="flex items-center gap-x-4">
-                        <InputControl inputKey="W" />
-                        <InputControl inputKey="S" />
+                        <InputControl inputKey="W" pressed={pressedKeys.has("w")}/>
+                        <InputControl inputKey="S" pressed={pressedKeys.has("s")}/>
                         <p className="ml-4 text-3xl font-bold text-white">Select</p>
                     </div>
                     <div className="ml-12 flex items-center gap-x-4">
-                        <InputControl inputKey="A" />
-                        <InputControl inputKey="D" />
+                        <InputControl inputKey="A" pressed={pressedKeys.has("a")}/>
+                        <InputControl inputKey="D" pressed={pressedKeys.has("d")}/>
                         <p className="ml-4 text-3xl font-bold text-white">Adjust</p>
                     </div>
                     <div className="absolute left-1/2 -translate-x-1/2">
