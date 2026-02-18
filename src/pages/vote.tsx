@@ -15,6 +15,7 @@ import {BaseDirectory, readTextFile, writeTextFile} from "@tauri-apps/plugin-fs"
 export default function Vote() {
     const VOTES_FILE = "votes.jsonl";
 
+    const [exitHover, setExitHover] = useState(false);
     const [stars, setStars] = useState<number[]>([0, 0, 0]);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
     const [showCountdown, setShowCountdown] = useState<boolean>(false);
@@ -192,7 +193,12 @@ export default function Vote() {
                                 </p>
                             )}
                         </div>
-                        <div className="cursor-pointer" onClick={() => router.push("/").then()}>
+                        <div
+                            className="cursor-pointer rounded-full p-1 transition-all duration-200"
+                            onClick={() => router.push("/").then()}
+                            onMouseEnter={() => setExitHover(true)}
+                            onMouseLeave={() => setExitHover(false)}
+                        >
                             <svg
                                 width="127"
                                 height="74"
@@ -202,17 +208,20 @@ export default function Vote() {
                             >
                                 <path
                                     d="M21.5778 66.5984L6.1001 10.5984C5.0439 6.77695 7.89624 3 11.861 3H89.9133C134.738 3 135.983 71 89.9133 71H27.3448C24.6467 71 22.2966 69.199 21.5778 66.5984Z"
-                                    fill="#FF2626"
+                                    fill={exitHover ? "#090909" : "#FF2626"}
+                                    style={{ transition: "fill 200ms ease" }}
                                 />
                                 <path
                                     d="M7.81348 3H90.9248C101.931 3 110.078 7.26006 115.531 13.5312C121.036 19.8617 123.921 28.3953 123.998 37.0264C124.075 45.6574 121.342 54.169 115.895 60.4766C110.5 66.7221 102.285 71 90.9248 71H24.4766C23.1284 71 21.9483 70.0973 21.5938 68.7783L4.92871 6.77832C4.4143 4.86366 5.84921 3 7.81348 3Z"
-                                    fill="#090909"
-                                    stroke="#FF2626"
+                                    fill={exitHover ? "#FF2626" : "#090909"}
+                                    stroke={exitHover ? "#090909" : "#FF2626"}
+                                    style={{ transition: "fill 200ms ease, stroke 200ms ease" }}
                                     strokeWidth="6"
                                 />
                                 <path
                                     d="M43 29.5L55.5 42M43 29.5L55.5 17M43 29.5H70.5C91 29.5 91 54 70.5 54"
-                                    stroke="#FF2626"
+                                    stroke={exitHover ? "#090909" : "#FF2626"}
+                                    style={{ transition: "stroke 200ms ease" }}
                                     strokeWidth="6"
                                     strokeLinecap="round"
                                 />
