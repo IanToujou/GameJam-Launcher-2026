@@ -20,7 +20,7 @@ The style is inspired by **Zenless Zone Zero**, a popular anime game.
 - Allows users to vote for their favorite games.
 - Players can assign **1–5 stars** to each game.
 - Star ratings will additionally be displayed as a score, ranging from **D** to **S**.
-- Votes are stored in a file.
+- Votes are stored in `votes.jsonl` inside the app data directory.
 
 ## Support
 
