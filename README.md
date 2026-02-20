@@ -3,6 +3,8 @@
 [![Release](https://img.shields.io/badge/-Release_1.0.0-blue?logo=github)](https://github.com/IanToujou/GameJam-Launcher-2026)
 [![Support](https://img.shields.io/badge/-Support-teal?logo=github)](https://github.com/IanToujou/)
 
+<img width="1912" height="1077" alt="Preview" src="https://github.com/user-attachments/assets/e48a63df-f1a4-4b91-bc33-6ad95a50663f" />
+
 This is a launcher specifically made for the 2026 Game Jam organized by 42 Luxembourg. Please note that, although you can
 build this project, it is not meant to be used as a standalone application.
 
