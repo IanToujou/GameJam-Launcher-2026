@@ -4,19 +4,24 @@ import InputButton from "@/components/input/InputButton";
 import { Info, Space } from "lucide-react";
 import InputControl from "@/components/input/InputControl";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import BoxGame from "@/components/box/BoxGame";
 import { router } from "next/client";
 import GameList from "@/data/GameList";
 import { Command } from "@tauri-apps/plugin-shell";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import Popup from "reactjs-popup";
+import PopupInformation from "@/components/popup/PopupInformation";
+import {PopupActions} from "reactjs-popup/dist/types";
 
 export default function HomePage() {
     const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
 
     const [launching, setLaunching] = useState<boolean>(false);
     const [selectedGame, setSelectedGame] = useState<number>(-1);
+
+    const popupInfo = useRef<PopupActions|null>(null);
 
     async function focusAppWindow() {
         await getCurrentWindow().setFocus();
@@ -157,7 +162,15 @@ export default function HomePage() {
                     </div>
                     <div className="grow" />
                     <div className="flex items-center gap-x-8">
-                        <InputButton icon={Info} />
+                        <Popup ref={popupInfo} arrow={false} closeOnEscape={true} closeOnDocumentClick={true} trigger={
+                            <div>
+                                <InputButton icon={Info} />
+                            </div>
+                        }>
+                            <PopupInformation onClose={() => {
+                                popupInfo.current?.close();
+                            }}/>
+                        </Popup>
                         <InputButton
                             content="Start Voting"
                             onClick={() => router.push("/vote").then()}
