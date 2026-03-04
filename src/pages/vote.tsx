@@ -30,10 +30,13 @@ export default function VotePage() {
 
     const submitVote = async () => {
         if (stars.some((star) => star === 0)) return;
+        const playTimeStr = sessionStorage.getItem('playTime');
+        const playTime = playTimeStr ? JSON.parse(playTimeStr) : [0, 0, 0];
         const entry: Vote = {
             timestamp: new Date().toISOString(),
             sessionId: crypto.randomUUID(),
             stars,
+            playTime,
         };
         const line = JSON.stringify(entry) + '\n';
         let existing = '';
@@ -43,6 +46,7 @@ export default function VotePage() {
         await writeTextFile(VOTES_FILE, existing + line, {
             baseDir: BaseDirectory.AppData,
         });
+        sessionStorage.removeItem('playTime');
     };
 
     const startInactivityTimer = useCallback(() => {
@@ -55,6 +59,7 @@ export default function VotePage() {
                 setCountdown(timeLeft);
                 if (timeLeft <= 0) {
                     if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+                    sessionStorage.removeItem('playTime');
                     router.push("/").then();
                 }
             }, 1000);

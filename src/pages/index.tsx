@@ -22,6 +22,7 @@ export default function HomePage() {
     const [selectedGame, setSelectedGame] = useState<number>(-1);
 
     const popupInfo = useRef<PopupActions|null>(null);
+    const gameStartTimeRef = useRef<number | null>(null);
 
     async function focusAppWindow() {
         await getCurrentWindow().setFocus();
@@ -37,6 +38,7 @@ export default function HomePage() {
         console.log(
             "Command: /bin/bash -c /home/event/Downloads/Games/" + GameList[selectedGame].path,
         );
+        gameStartTimeRef.current = Date.now();
         setTimeout(() => {
             Command.create("launch-game", [
                 "-c",
@@ -46,6 +48,14 @@ export default function HomePage() {
                 .then((result) => {
                     console.log(result);
                     const timer = setTimeout(() => {
+                        if (gameStartTimeRef.current) {
+                            const playTime = Math.floor((Date.now() - gameStartTimeRef.current) / 1000);
+                            const existingPlayTime = sessionStorage.getItem('playTime');
+                            const playTimeArray = existingPlayTime ? JSON.parse(existingPlayTime) : [0, 0, 0];
+                            playTimeArray[selectedGame] = (playTimeArray[selectedGame] || 0) + playTime;
+                            sessionStorage.setItem('playTime', JSON.stringify(playTimeArray));
+                            gameStartTimeRef.current = null;
+                        }
                         focusAppWindow().then();
                         router.reload();
                     }, 500);
