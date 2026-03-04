@@ -21,7 +21,7 @@ const GameList: Game[] = [
     {
         id: 3,
         name: "Save The PC",
-        description: "A cool game about something cool or so.",
+        description: "Action game in a digital universe inside a computer.",
         imageSrc: Cover3.src,
         path: "SaveThePC/SaveThePC.x86_64",
     },
