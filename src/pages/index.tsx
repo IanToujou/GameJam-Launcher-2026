@@ -155,7 +155,7 @@ export default function HomePage() {
                                     setSelectedGame(-1);
                                 }}
                                 onClick={() => launchGame()}
-                                className="game-box-0"
+                                className={`game-box-${index}`}
                             />
                         );
                     })}
