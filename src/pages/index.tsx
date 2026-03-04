@@ -30,12 +30,12 @@ export default function HomePage() {
             "Launching game ID " + selectedGame + " (" + GameList[selectedGame].name + ").",
         );
         console.log(
-            "Command: /bin/bash -c /home/ibour/Downloads/Games/" + GameList[selectedGame].path,
+            "Command: /bin/bash -c /home/event/Downloads/Games/" + GameList[selectedGame].path,
         );
         setTimeout(() => {
             Command.create("launch-game", [
                 "-c",
-                "/home/ibour/Downloads/Games/" + GameList[selectedGame].path,
+                "/home/event/Downloads/Games/" + GameList[selectedGame].path,
             ])
                 .execute()
                 .then((result) => {

@@ -19,7 +19,7 @@
           "args": [
             "-c",
             {
-              "validator": "^/home/ibour/Downloads/Games/[a-zA-Z0-9_\\-/\\.]+$"
+              "validator": "^/home/event/Downloads/Games/[a-zA-Z0-9_\\-/\\.]+$"
             }
           ],
           "sidecar": false

@@ -6,24 +6,24 @@ import Cover3 from "@/public/assets/img/game_cover_3.jpg";
 const GameList: Game[] = [
     {
         id: 1,
-        name: "Awesome Game",
-        description: "A cool game about something cool or so.",
+        name: "Antventure",
+        description: "Play as a young ant to survive. Will you reach adulthood?",
         imageSrc: Cover1.src,
-        path: "TestGame/FT_TwinTowers.x86_64",
+        path: "AntVenture/Antventure.x86_64",
     },
     {
         id: 2,
-        name: "Awesome Game 2",
-        description: "A cool game about something cool or so.",
+        name: "Dice Crawler",
+        description: "A randomly generated RPG dungeon adventure.",
         imageSrc: Cover2.src,
-        path: "TestGame/FT_TwinTowers.x86_64",
+        path: "DiceCrawler/DiceCrawler.x86_64",
     },
     {
         id: 3,
-        name: "Awesome Game 3",
+        name: "Save The PC",
         description: "A cool game about something cool or so.",
         imageSrc: Cover3.src,
-        path: "TestGame/FT_TwinTowers.x86_64",
+        path: "SaveThePC/SaveThePC.x86_64",
     },
 ];
 
