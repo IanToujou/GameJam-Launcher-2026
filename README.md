@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/badge/-Release_1.0.0-blue?logo=github)](https://github.com/IanToujou/GameJam-Launcher-2026)
 [![Support](https://img.shields.io/badge/-Support-teal?logo=github)](https://github.com/IanToujou/)
 
-<img width="1912" height="1077" alt="Preview" src="https://github.com/user-attachments/assets/e48a63df-f1a4-4b91-bc33-6ad95a50663f" />
+<img width="1280" height="640" alt="Thumbnail" src="https://github.com/user-attachments/assets/52868a35-621e-43a1-8671-b3ddba925615" />
 
 This is a launcher specifically made for the 2026 Game Jam organized by 42 Luxembourg. Please note that, although you can
 build this project, it is not meant to be used as a standalone application.
@@ -23,6 +23,10 @@ The style is inspired by **Zenless Zone Zero**, a popular anime game.
 - Players can assign **1–5 stars** to each game.
 - Star ratings will additionally be displayed as a score, ranging from **D** to **S**.
 - Votes are stored in `votes.jsonl` inside the app data directory.
+
+## Screenshots
+
+<img width="1912" height="1077" alt="Preview" src="https://github.com/user-attachments/assets/e48a63df-f1a4-4b91-bc33-6ad95a50663f" />
 
 ## Support
 
